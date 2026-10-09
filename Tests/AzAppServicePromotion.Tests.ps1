@@ -6,31 +6,7 @@ BeforeAll {
 
     # If Az.Accounts / Az.Websites are not installed, create minimal stub modules so the
     # manifest's RequiredModules resolve and the commands exist for mocking.
-    $needed = @('Az.Accounts', 'Az.Websites') | Where-Object { -not (Get-Module -ListAvailable -Name $_) }
-    if ($needed) {
-        $stubRoot = Join-Path ([IO.Path]::GetTempPath()) ("azasp-stubs-" + [guid]::NewGuid())
-        $stubs = @{
-            'Az.Accounts' = @'
-function Get-AzContext { [CmdletBinding()] param() }
-function Set-AzContext { [CmdletBinding()] param([object] $Context, [string] $Subscription, [string] $Tenant) }
-'@
-            'Az.Websites' = @'
-function Get-AzWebApp { [CmdletBinding()] param([string] $ResourceGroupName, [string] $Name) }
-function Get-AzWebAppSlot { [CmdletBinding()] param([string] $ResourceGroupName, [string] $Name, [string] $Slot) }
-function Set-AzWebApp { [CmdletBinding()] param([string] $ResourceGroupName, [string] $Name, [hashtable] $AppSettings, [hashtable] $ConnectionStrings) }
-function Set-AzWebAppSlot { [CmdletBinding()] param([string] $ResourceGroupName, [string] $Name, [string] $Slot, [hashtable] $AppSettings, [hashtable] $ConnectionStrings) }
-function Get-AzWebAppSlotConfigName { [CmdletBinding()] param([string] $ResourceGroupName, [string] $Name) }
-function Set-AzWebAppSlotConfigName { [CmdletBinding()] param([string] $ResourceGroupName, [string] $Name, [string[]] $AppSettingNames, [string[]] $ConnectionStringNames, [switch] $RemoveAllAppSettingNames, [switch] $RemoveAllConnectionStringNames) }
-'@
-        }
-        foreach ($n in $needed) {
-            $dir = Join-Path (Join-Path $stubRoot $n) '2.0.0'
-            $null = New-Item -ItemType Directory -Path $dir -Force
-            Set-Content -Path (Join-Path $dir "$n.psm1") -Value $stubs[$n]
-            New-ModuleManifest -Path (Join-Path $dir "$n.psd1") -RootModule "$n.psm1" -ModuleVersion '2.0.0' -FunctionsToExport '*'
-        }
-        $env:PSModulePath = $stubRoot + [IO.Path]::PathSeparator + $env:PSModulePath
-    }
+    $null = & (Join-Path (Join-Path $script:ModuleRoot 'build') 'Initialize-AzStub.ps1')
 
     Get-Module $script:ModuleName | Remove-Module -Force
     Import-Module (Join-Path $script:ModuleRoot "$($script:ModuleName).psd1") -Force
