@@ -27,7 +27,7 @@ Author = 'algogang'
 CompanyName = 'algogang'
 
 # Copyright statement for this module
-Copyright = '(c) algogang. All rights reserved.'
+Copyright = '(c) 2026 algogang. Licensed under the MIT License.'
 
 # Description of the functionality provided by this module
 Description = 'Export App Service app settings and connection strings from a fixed source subscription to an editable JSON file, then diff and apply them to a destination App Service in another subscription (Az.Accounts / Az.Websites).'
@@ -105,10 +105,10 @@ PrivateData = @{
                'AppSettings'
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/bleudev900/AzAppServicePromotion/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri =
+        ProjectUri = 'https://github.com/bleudev900/AzAppServicePromotion'
 
         # A URL to an icon representing this module.
         # IconUri = ''
