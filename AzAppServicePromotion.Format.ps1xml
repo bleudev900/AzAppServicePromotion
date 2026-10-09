@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>AzAppServicePromotion.DiffItem</Name>
+      <ViewSelectedBy>
+        <TypeName>AzAppServicePromotion.DiffItem</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><Label>Kind</Label></TableColumnHeader>
+          <TableColumnHeader><Label>Action</Label></TableColumnHeader>
+          <TableColumnHeader><Label>Name</Label></TableColumnHeader>
+          <TableColumnHeader><Label>Changes</Label></TableColumnHeader>
+          <TableColumnHeader><Label>CurrentValue</Label></TableColumnHeader>
+          <TableColumnHeader><Label>NewValue</Label></TableColumnHeader>
+          <TableColumnHeader><Label>Sticky</Label></TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem><PropertyName>Kind</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>Action</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>Name</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>Changes</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>CurrentValue</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>NewValue</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>NewSlotSetting</PropertyName></TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>
