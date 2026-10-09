@@ -1,5 +1,7 @@
 # AzAppServicePromotion
 
+[![CI](https://github.com/bleudev900/AzAppServicePromotion/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bleudev900/AzAppServicePromotion/actions/workflows/ci.yml)
+
 PowerShell module that promotes **App Service app settings (environment variables) and connection strings**
 from a fixed *source* App Service in one subscription to a *destination* App Service in another subscription,
 using Az PowerShell (`Az.Accounts`, `Az.Websites`).
@@ -147,12 +149,32 @@ The file is validated (duplicate names, types, JSON) before anything touches Azu
 - Diff output masks values by default (except Key Vault references); use `-ShowValues` deliberately.
 - Delete export files when you're done.
 
-## Tests
+## Tests and lint
+
+The same entry point is used locally and in CI:
 
 ```powershell
-Install-Module Pester -MinimumVersion 5.0 -Scope CurrentUser -SkipPublisherCheck
-Invoke-Pester ./Tests -Output Detailed
+./build.ps1 -Task Bootstrap                 # installs pinned Pester 5.7.1 and PSScriptAnalyzer 1.25.0 (CurrentUser)
+./build.ps1 -Task Lint, Manifest, Test      # PSScriptAnalyzer, Test-ModuleManifest, Pester
 ```
 
-Tests mock every Az cmdlet (no Azure access needed). If `Az.Accounts`/`Az.Websites` are not installed, the tests
-generate stub modules automatically.
+- **Lint** runs PSScriptAnalyzer over the whole repo with `PSScriptAnalyzerSettings.psd1` (default rules plus
+  5.1/7.x syntax compatibility) and fails on any Error or Warning.
+- **Test** runs the Pester suite and writes NUnit XML to `TestResults/`.
+
+Tests mock every Az cmdlet (no Azure access needed). If `Az.Accounts`/`Az.Websites` are not installed,
+`build/Initialize-AzStub.ps1` generates stub modules so the manifest's `RequiredModules` resolve.
+
+### CI
+
+`.github/workflows/ci.yml` runs on pushes to `main`, on pull requests and on demand (`workflow_dispatch`):
+
+| Job | Runner | Shell |
+|---|---|---|
+| Lint (PSScriptAnalyzer + Test-ModuleManifest) | ubuntu-latest | pwsh |
+| Test | ubuntu-latest | pwsh |
+| Test | windows-latest | pwsh |
+| Test | windows-latest | Windows PowerShell 5.1 |
+
+Pester results are uploaded as `test-results-*` artifacts on every run. The Az modules are never
+installed in CI (stubs are used), and Pester/PSScriptAnalyzer are cached between runs.

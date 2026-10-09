@@ -1,3 +1,4 @@
 # Exported App Service settings contain secrets
 *-settings-*.json
 promotions/
+TestResults/
