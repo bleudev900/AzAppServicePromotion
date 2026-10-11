@@ -178,3 +178,7 @@ Tests mock every Az cmdlet (no Azure access needed). If `Az.Accounts`/`Az.Websit
 
 Pester results are uploaded as `test-results-*` artifacts on every run. The Az modules are never
 installed in CI (stubs are used), and Pester/PSScriptAnalyzer are cached between runs.
+
+## License
+
+Released under the [MIT License](LICENSE). You are free to use, modify, and distribute this module, including for commercial purposes.
